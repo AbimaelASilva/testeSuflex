@@ -181,8 +181,13 @@ class _TabBarControllerWidgetState extends State<TabBarControllerWidget>
                     dateLastChange: '',
                     isANewProduct: true,
                   ))
-                  .then((value) =>
-                      {Scaffold.of(context).showSnackBar(mySnackBar())});
+                  .then((value) => {
+                        Scaffold.of(context).showSnackBar(mySnackBar()),
+                        productTitleController.text = '',
+                        productCategoryController.text = '',
+                        productDescriptionController.text = '',
+                        productPriceController.text = '',
+                      });
             },
           ),
         ],
