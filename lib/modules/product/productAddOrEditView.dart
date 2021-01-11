@@ -1,22 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:testeSuflex/modules/product/productModel.dart';
 import 'package:testeSuflex/modules/product/tabsOnEditOrAddProductPage.dart';
 
 class ProductAddOrEditView extends StatefulWidget {
-  // HomePageView({Key key, this.title}) : super(key: key);
+  final String comingFrom;
+  final ProductModel product;
+
+  ProductAddOrEditView(
+    this.comingFrom,
+    this.product,
+  );
 
   @override
-  _ProductAddOrEditViewState createState() => _ProductAddOrEditViewState();
+  _ProductAddOrEditViewState createState() =>
+      _ProductAddOrEditViewState(comingFrom, product);
 }
 
 class _ProductAddOrEditViewState extends State<ProductAddOrEditView>
     with SingleTickerProviderStateMixin {
-  TabBarControllerWidget tabBarPages = TabBarControllerWidget();
+  String comingFrom;
+  ProductModel product;
+
+  _ProductAddOrEditViewState(
+    this.comingFrom,
+    this.product,
+  );
+
+  //TabBarControllerWidget tabBarPages = TabBarControllerWidget();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Editar Produto'),
+        title:
+            Text(comingFrom == 'add' ? 'Cadastrar Produto' : 'Editar Produto'),
         centerTitle: true,
       ),
       backgroundColor: Colors.grey[100],
@@ -57,8 +74,6 @@ class _ProductAddOrEditViewState extends State<ProductAddOrEditView>
       left: 0,
       right: 0,
       child: Container(
-          // width: 190.0,
-          //  height: 190.0,
           decoration: new BoxDecoration(
               shape: BoxShape.rectangle,
               image: new DecorationImage(
@@ -92,283 +107,7 @@ class _ProductAddOrEditViewState extends State<ProductAddOrEditView>
   Widget tabBarPagesWidget(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.232),
-      child: tabBarPages,
+      child: TabBarControllerWidget(comingFrom, product),
     );
   }
-
-/*
-  Widget headerOptionsProducts(BuildContext context) {
-    return Positioned(
-        top: MediaQuery.of(context).size.height * 0.30,
-        //height: MediaQuery.of(context).size.height * 0.35,
-        left: MediaQuery.of(context).size.width * 0.02,
-        right: MediaQuery.of(context).size.width * 0.02,
-        child: Column(
-          children: [
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              Text(
-                'Informações do Produto',
-                style: TextStyle(color: Colors.red),
-              ),
-              Text(
-                'Ingredientes',
-                style: TextStyle(color: Colors.red),
-              ),
-              Text(
-                'Rendimento',
-                style: TextStyle(color: Colors.red),
-              ),
-            ]),
-            Divider()
-          ],
-        ));
-  }
-
-  Widget titleProduct(BuildContext context) {
-    return Positioned(
-        top: MediaQuery.of(context).size.height * 0.34,
-        //height: MediaQuery.of(context).size.height * 0.35,
-        left: MediaQuery.of(context).size.width * 0.02,
-        right: MediaQuery.of(context).size.width * 0.02,
-        child: Text('Título'));
-  }
-
-  TextEditingController productTitleController = TextEditingController();
-  Widget inputProductTitle(BuildContext context) {
-    return Positioned(
-      top: MediaQuery.of(context).size.height * 0.365,
-      //height: MediaQuery.of(context).size.height * 0.35,
-      left: MediaQuery.of(context).size.width * 0.02,
-      right: MediaQuery.of(context).size.width * 0.02,
-      child: TextFormField(
-        controller: productTitleController,
-        maxLength: 55,
-        decoration: InputDecoration(
-          contentPadding: EdgeInsets.only(left: 10, top: 0, bottom: 0),
-          labelText: 'Escreva o nome/título do produto',
-          fillColor: Colors.white,
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8.0),
-            borderSide: BorderSide(
-              color: Colors.blue,
-            ),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8.0),
-            borderSide: BorderSide(
-              color: Colors.grey[400],
-              width: 2.0,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget titleCategory(BuildContext context) {
-    return Positioned(
-        top: MediaQuery.of(context).size.height * 0.44,
-        //height: MediaQuery.of(context).size.height * 0.35,
-        left: MediaQuery.of(context).size.width * 0.02,
-        right: MediaQuery.of(context).size.width * 0.02,
-        child: Text('Categoria do Produto'));
-  }
-
-  Widget inputProductCategory(BuildContext context) {
-    return Positioned(
-      top: MediaQuery.of(context).size.height * 0.49,
-      //height: MediaQuery.of(context).size.height * 0.35,
-      left: MediaQuery.of(context).size.width * 0.02,
-      right: MediaQuery.of(context).size.width * 0.02,
-      child: TextFormField(
-        controller: productTitleController,
-        maxLength: 55,
-        decoration: InputDecoration(
-          contentPadding: EdgeInsets.only(left: 10),
-          labelText: 'Escolha a categoria do produto',
-          fillColor: Colors.white,
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8.0),
-            borderSide: BorderSide(
-              color: Colors.blue,
-            ),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8.0),
-            borderSide: BorderSide(
-              color: Colors.grey[400],
-              width: 2.0,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget titleProductDescription(BuildContext context) {
-    return Positioned(
-        top: MediaQuery.of(context).size.height * 0.585,
-        //height: MediaQuery.of(context).size.height * 0.35,
-        left: MediaQuery.of(context).size.width * 0.02,
-        right: MediaQuery.of(context).size.width * 0.02,
-        child: Text('Descrição do Produto'));
-  }
-
-  Widget inputProductDescription(BuildContext context) {
-    return Positioned(
-      top: MediaQuery.of(context).size.height * 0.615,
-      //height: MediaQuery.of(context).size.height * 0.35,
-      left: MediaQuery.of(context).size.width * 0.02,
-      right: MediaQuery.of(context).size.width * 0.02,
-      child: TextFormField(
-        controller: productTitleController,
-        maxLength: 500,
-        decoration: InputDecoration(
-          contentPadding:
-              new EdgeInsets.symmetric(vertical: 20.0, horizontal: 2.0),
-          labelText: 'Descrição mais detalhada do produto.',
-          fillColor: Colors.white,
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8.0),
-            borderSide: BorderSide(
-              color: Colors.blue,
-            ),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8.0),
-            borderSide: BorderSide(
-              color: Colors.grey[400],
-              width: 2.0,
-            ),
-          ),
-        ),
-        keyboardType: TextInputType.multiline,
-        minLines: 1,
-        maxLines: null,
-      ),
-    );
-  }
-
-
-  Widget tabBarPagesWidget(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 250),
-      child: tabBarPages,
-    );
-  }
-
-
-  
-
-  Widget storeDescription(BuildContext context) {
-    return Positioned(
-      top: MediaQuery.of(context).size.height * 0.36,
-      height: MediaQuery.of(context).size.height * 0.35,
-      left: 0,
-      right: 0,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            'Padaria Amélia',
-            style: TextStyle(
-              color: Colors.grey[900],
-              fontSize: 25,
-            ),
-          ),
-          Text(
-            'Rua Antônio de Godói, 88-Centro/SP',
-            style: TextStyle(
-              color: Colors.grey[600],
-              fontSize: 16,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget storeRatings(BuildContext context) {
-    return Positioned(
-      top: MediaQuery.of(context).size.height * 0.45,
-      //height: MediaQuery.of(context).size.height * 0.35,
-      left: 0,
-      right: 0,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            Icons.star,
-            color: Colors.yellow[700],
-            size: 30,
-          ),
-          Text(
-            '5.0',
-            style: TextStyle(
-              color: Colors.yellow[600],
-              fontSize: 25,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          Text(
-            '(63 avaliações)',
-            style: TextStyle(
-              color: Colors.grey[700],
-              fontSize: 15,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget addButton(BuildContext context) {
-    return Positioned(
-        top: MediaQuery.of(context).size.height * 0.52,
-        //height: MediaQuery.of(context).size.height * 0.35,
-        left: MediaQuery.of(context).size.width * 0.02,
-        right: MediaQuery.of(context).size.width * 0.02,
-        child: TextButton.icon(
-            label: Text('Woolha.com'),
-            icon: Icon(Icons.web),
-            onPressed: () {
-              print('Pressed');
-            }));
-  }
-
-  Widget titleListOfBreads(BuildContext context) {
-    return Positioned(
-      top: MediaQuery.of(context).size.height * 0.62,
-      //height: MediaQuery.of(context).size.height * 0.35,
-      left: MediaQuery.of(context).size.width * 0.03,
-      right: MediaQuery.of(context).size.width * 0.03,
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Pães',
-                style: TextStyle(
-                  color: Colors.red,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              Text(
-                'Ativar no cardápio',
-                style: TextStyle(
-                  color: Colors.red,
-                  fontSize: 13,
-                  //fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          ),
-          Divider()
-        ],
-      ),
-    );
-  }
-    */
 }

@@ -3,13 +3,29 @@ import 'package:testeSuflex/modules/product/productModel.dart';
 import 'package:testeSuflex/modules/product/productRepository.dart';
 
 class TabBarControllerWidget extends StatefulWidget {
-  const TabBarControllerWidget({Key key}) : super(key: key);
+  //const TabBarControllerWidget({Key key}) : super(key: key);
+  final String comingFrom;
+  final ProductModel product;
+
+  TabBarControllerWidget(
+    this.comingFrom,
+    this.product,
+  );
+
   @override
-  _TabBarControllerWidgetState createState() => _TabBarControllerWidgetState();
+  _TabBarControllerWidgetState createState() =>
+      _TabBarControllerWidgetState(comingFrom, product);
 }
 
 class _TabBarControllerWidgetState extends State<TabBarControllerWidget>
     with SingleTickerProviderStateMixin {
+  String comingFrom;
+  ProductModel product;
+
+  _TabBarControllerWidgetState(
+    this.comingFrom,
+    this.product,
+  );
   // Listas das Tabs
   final List<Tab> myTabs = <Tab>[
     Tab(
@@ -27,12 +43,16 @@ class _TabBarControllerWidgetState extends State<TabBarControllerWidget>
   TextEditingController productTitleController = TextEditingController();
   TextEditingController productDescriptionController = TextEditingController();
   TextEditingController productCategoryController = TextEditingController();
-  TextEditingController productPriceController =
-      TextEditingController(text: '0.0');
+  TextEditingController productPriceController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+    productTitleController.text = product.title;
+    productDescriptionController.text = product.description;
+    productCategoryController.text = product.category;
+    productPriceController.text =
+        comingFrom == 'add' ? '0.00' : product.price.toString();
     _tabController = TabController(vsync: this, length: myTabs.length);
   }
 
@@ -54,7 +74,6 @@ class _TabBarControllerWidgetState extends State<TabBarControllerWidget>
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(50.0),
             child: AppBar(
-              // backgroundColor: Colors.grey[100],
               bottom: TabBar(
                 controller: _tabController,
                 tabs: myTabs,
@@ -64,7 +83,6 @@ class _TabBarControllerWidgetState extends State<TabBarControllerWidget>
           body: TabBarView(
             controller: _tabController,
             children: myTabs.map((Tab tab) {
-              final String label = tab.text.toLowerCase();
               return Container(
                   //color: Colors.green,
                   child: Padding(
@@ -145,7 +163,7 @@ class _TabBarControllerWidgetState extends State<TabBarControllerWidget>
     return Expanded(
         child: OutlinedButton(
       onPressed: () {
-        // Respond to button press
+        print('Você pressionou o botão de desconto!');
       },
       child: Container(
           height: MediaQuery.of(context).size.height * 0.085,
@@ -154,8 +172,6 @@ class _TabBarControllerWidgetState extends State<TabBarControllerWidget>
   }
 
   Widget updateInformationsButton(BuildContext context) {
-    ProductRepository productRepository = ProductRepository();
-
     return Padding(
       padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.015),
       child: Row(
@@ -167,22 +183,12 @@ class _TabBarControllerWidgetState extends State<TabBarControllerWidget>
                 borderRadius: new BorderRadius.circular(5.0)),
             label: Container(
                 width: MediaQuery.of(context).size.width * 0.84,
-                child: Center(child: Text('Atualizar Informações'))),
+                child: Center(
+                    child: Text(comingFrom == 'add'
+                        ? 'Salvar novo produto'
+                        : 'Atualizar Informações'))),
             onPressed: () async {
-              productRepository
-                  .saveNewProduct(ProductModel(
-                    title: productTitleController.text,
-                    category: productCategoryController.text,
-                    description: productDescriptionController.text,
-                    price: double.parse(productPriceController.text),
-                    discount: 9,
-                    imagePath: '',
-                    creationDate: '',
-                    dateLastChange: '',
-                    isANewProduct: true,
-                  ))
-                  .then((value) =>
-                      {Scaffold.of(context).showSnackBar(mySnackBar())});
+              saveNewProduct(context);
             },
           ),
         ],
@@ -190,18 +196,64 @@ class _TabBarControllerWidgetState extends State<TabBarControllerWidget>
     );
   }
 
+  ProductRepository productRepository = ProductRepository();
+  saveNewProduct(context) {
+    productRepository
+        .saveNewProduct(ProductModel(
+          title: productTitleController.text,
+          category: productCategoryController.text,
+          description: productDescriptionController.text,
+          price: double.parse(productPriceController.text),
+          discount: 9,
+          imagePath: '',
+          creationDate: '',
+          dateLastChange: '',
+          isANewProduct: true,
+        ))
+        .then((value) => {
+              Scaffold.of(context).showSnackBar(mySnackBar()),
+              productTitleController.text = '',
+              productCategoryController.text = '',
+              productDescriptionController.text = '',
+              productPriceController.text = '',
+            });
+  }
+
+  updateProduct(context) {
+    productRepository
+        .updateProduct(ProductModel(
+          id: product.id,
+          title: productTitleController.text,
+          category: productCategoryController.text,
+          description: productDescriptionController.text,
+          price: double.parse(productPriceController.text),
+          discount: 9,
+          imagePath: '',
+          creationDate: '',
+          dateLastChange: '',
+          isANewProduct: false,
+        ))
+        .then((value) => {
+              Scaffold.of(context).showSnackBar(mySnackBar()),
+              productTitleController.text = '',
+              productCategoryController.text = '',
+              productDescriptionController.text = '',
+              productPriceController.text = '',
+            });
+  }
+
   Widget mySnackBar() {
     return SnackBar(
-      content: Text('Muito bem, o produto foi salvo com sucesso!'),
+      content: Text(comingFrom == 'add'
+          ? 'Muito bem, o produto foi SALVO com sucesso!'
+          : 'Muito bem, o produto foi ATUALIZADO com sucesso!'),
       action: SnackBarAction(
-        label: 'Desfazer',
+        label: 'Ok.',
         onPressed: () {
           // código para desfazer a ação!
         },
       ),
     );
-    // Encontra o Scaffold na árvore de widgets
-    // e o usa para exibir o SnackBar!
   }
 
   Widget modelInputInformations(
@@ -217,7 +269,7 @@ class _TabBarControllerWidgetState extends State<TabBarControllerWidget>
             : comingFrom == 'description'
                 ? 500
                 : 55,
-        // maxLines: comingFrom == 'description' ? 3 : 1,
+        maxLines: comingFrom == 'description' ? 3 : 1,
         keyboardType:
             comingFrom == 'price' ? TextInputType.number : TextInputType.text,
         decoration: InputDecoration(

@@ -9,8 +9,6 @@ class ProductRepository {
     myHasuraConnect = MyHasuraClass().initHasuraConnect();
   }
 
-  Snapshot returnProducts;
-
 //Consultar ----------------------------------------------------------------------
   consultAllProduct() async {
     //Preparando query de envio para Hasura
@@ -74,6 +72,45 @@ class ProductRepository {
     if (returnOfHasura['data']['insert_suflex_test_products']['returning'] !=
         null) {}
     return true;
+  }
+
+   //Update ----------------------------------------------------------------------
+  Future<bool> updateProduct(ProductModel product) async {
+    print('ID DO PRODUTO A SER DELETADO: ${product.id}');
+    var query = """
+ mutation MyMutation {
+  update_suflex_test_products(_set: 
+{
+category: "${product.category}", 
+    creationDate: "", 
+    dateLastChange: "", 
+    description: "${product.description}", 
+    discount: ${product.discount}, 
+    imagePath: "caminho teste2", 
+    price: ${product.price}, 
+    title: "${product.title}" ,
+    isANewProduct : ${product.isANewProduct} 
+}, where: {id: 
+{
+_eq: ${product.id}
+}}) {
+    returning {
+      id
+      title
+    }
+  }
+}
+    """;
+
+    //Envio da query para Hasura
+    var returnOfHasura = await myHasuraConnect.mutation(query);
+    print('RETORNO do delete : $returnOfHasura');
+    if (returnOfHasura['data']['update_suflex_test_products']['returning'] !=
+        null) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   //Delete ----------------------------------------------------------------------

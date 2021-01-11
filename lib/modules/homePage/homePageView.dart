@@ -6,15 +6,14 @@ import 'package:testeSuflex/modules/product/productModel.dart';
 import 'package:testeSuflex/modules/product/productRepository.dart';
 
 class HomePageView extends StatefulWidget {
-  // HomePageView({Key key, this.title}) : super(key: key);
-
   @override
   _HomePageViewState createState() => _HomePageViewState();
 }
 
 class _HomePageViewState extends State<HomePageView> {
   ProductRepository productRepository = ProductRepository();
-  // List<ProductModel> productLis;
+
+//Controller do stream hasura
   StreamController _streamController = StreamController<List<ProductModel>>();
 
   @override
@@ -30,11 +29,8 @@ class _HomePageViewState extends State<HomePageView> {
   }
 
   Future loadProducts() async {
-    // _streamController = StreamController<List<ProductModel>>();
     List<ProductModel> productLis = await productRepository.consultAllProduct();
-
     _streamController.add(productLis);
-    print('MUUUUITO bem!');
     refreshHome();
   }
 
@@ -59,7 +55,7 @@ class _HomePageViewState extends State<HomePageView> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          navigateToSubPage(context);
+          navigateToProductAddOrEditView(context, 'add', ProductModel());
         },
         tooltip: 'Increment',
         child: Icon(Icons.add),
@@ -77,8 +73,6 @@ class _HomePageViewState extends State<HomePageView> {
       right: 0,
       child: Container(
         color: Colors.red,
-        //height: MediaQuery.of(context).size.height * 3,
-        //width: double.infinity,
         child: Padding(
           padding: const EdgeInsets.only(top: 10),
           child: Row(
@@ -95,7 +89,7 @@ class _HomePageViewState extends State<HomePageView> {
               Padding(
                 padding: const EdgeInsets.only(top: 15),
                 child: Text(
-                  'FlexStore',
+                  'FlexStores',
                   style: TextStyle(color: Colors.white, fontSize: 17),
                 ),
               ),
@@ -206,15 +200,18 @@ class _HomePageViewState extends State<HomePageView> {
         icon: Icon(Icons.add),
         label: Text('Adicionar novo produto'),
         onPressed: () {
-          navigateToSubPage(context);
+          navigateToProductAddOrEditView(context, 'add', ProductModel());
         },
       ),
     );
   }
 
-  Future navigateToSubPage(context) async {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => ProductAddOrEditView()));
+  Future navigateToProductAddOrEditView(
+      context, String sendFrom, ProductModel product) async {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ProductAddOrEditView(sendFrom, product)));
   }
 
   Widget titleListOfBreads(BuildContext context) {
@@ -260,7 +257,6 @@ class _HomePageViewState extends State<HomePageView> {
         top: MediaQuery.of(context).size.height * 0.67,
         left: MediaQuery.of(context).size.width * 0.03,
         right: MediaQuery.of(context).size.width * 0.03,
-        //bottom: MediaQuery.of(context).size.height * 0.01,
         child: Column(
           children: [
             Expanded(
@@ -345,7 +341,7 @@ class _HomePageViewState extends State<HomePageView> {
                                                   top: 6.0,
                                                 ),
                                                 child: Text(
-                                                  '${product.title}',
+                                                  '${product.title.toUpperCase()}',
                                                   style: TextStyle(
                                                       color: Colors.grey[800],
                                                       fontSize: 21,
@@ -359,7 +355,7 @@ class _HomePageViewState extends State<HomePageView> {
                                                         .width *
                                                     0.7,
                                                 child: Text(
-                                                  '${product.description}',
+                                                  '${product.description.toUpperCase()}',
                                                   style: TextStyle(
                                                       color: Colors.grey[500],
                                                       fontSize: 14,
@@ -387,7 +383,6 @@ class _HomePageViewState extends State<HomePageView> {
                                           child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.center,
-                                              //mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
                                                 Transform.scale(
                                                   scale: 1.5,
@@ -404,13 +399,19 @@ class _HomePageViewState extends State<HomePageView> {
                                                   ),
                                                 ),
                                                 Transform.scale(
-                                                  scale: 1.5,
-                                                  child: Icon(
-                                                    Icons.edit,
-                                                    color: Colors.red,
-                                                    //size: 30,
-                                                  ),
-                                                )
+                                                    scale: 1.5,
+                                                    child: IconButton(
+                                                        icon: Icon(
+                                                          Icons.edit,
+                                                          color: Colors.red,
+                                                          //size: 30,
+                                                        ),
+                                                        onPressed: () {
+                                                          navigateToProductAddOrEditView(
+                                                              context,
+                                                              'toEdit',
+                                                              product);
+                                                        }))
                                               ]),
                                         ),
                                       ],
@@ -428,7 +429,6 @@ class _HomePageViewState extends State<HomePageView> {
   }
 
   deleteProduct(context, index, product) {
-    
     productRepository
         .deleteProduct(ProductModel(id: product.id))
         .then((value) => {Scaffold.of(context).showSnackBar(mySnackBar())});
