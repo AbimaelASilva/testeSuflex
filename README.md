@@ -1,16 +1,41 @@
-# testeSuflex
+# Projeto teste apra a empresa Suflex: https://www.suflex.com.br/
 
-A new Flutter project.
+Projeto avaliativo Suflex
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+Este projeto é um CRUD básico.
 
-A few resources to get you started if this is your first Flutter project:
+O que foi solicitado:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+O desafio técnico consiste em criar um CRUD (apenas criagdo e remogao) da seguinte funcionalidade
+de geréncia de produto.
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Observções:
+
+1. sinta-se a vontade para usar bibliotecas de injegdo de dependéncia, como Provider ou get_it, se
+apropriado. Mesmo sendo um teste pequeno é importante demonstrar o conhecimento.
+
+2. ao construir a IU e navegar entre as telas, escolha a abordagem que faz mais sentido em termos de
+usabilidade.
+
+3. adicionar testes ndo é necessdrio para este projeto, mas o cédigo final deve ser testavel.
+
+4. Sinta-se a vontade para usar Firebase ou algum servico feito em node ou outra tecnologia. Mas nao
+deixe isso impedir de enviar no prazo, use hitps://jsonplaceholder.typicode.com/ ou algo semelhante para
+criar sua solucaéo.
+
+Os principais fatores de avaliacao:
+
+. O aplicativo funciona e atende aos requisitos descritos acima
+
+. estrutura geral do projeto e organizacdo do cédigo
+
+. separacdo de interesses entre IU, autenticacdo, cédigo de banco de dados
+. simplicidade - nao exigimos uma solugaéo com engenharia excessiva
+
+. convencées de nomenclatura para variaveis, funcdes e classes
+
+
+
+
+
