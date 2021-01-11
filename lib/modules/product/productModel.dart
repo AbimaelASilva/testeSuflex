@@ -3,7 +3,7 @@ class ProductModel {
   String title;
   String category;
   String description;
-  double price;
+  double price = 0.00;
   int discount;
   String imagePath;
   String creationDate;

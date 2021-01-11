@@ -1,22 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:testeSuflex/modules/product/productModel.dart';
 import 'package:testeSuflex/modules/product/tabsOnEditOrAddProductPage.dart';
 
 class ProductAddOrEditView extends StatefulWidget {
-  // HomePageView({Key key, this.title}) : super(key: key);
+  final String comingFrom;
+  final ProductModel product;
+
+  ProductAddOrEditView(
+    this.comingFrom,
+    this.product,
+  );
 
   @override
-  _ProductAddOrEditViewState createState() => _ProductAddOrEditViewState();
+  _ProductAddOrEditViewState createState() =>
+      _ProductAddOrEditViewState(comingFrom, product);
 }
 
 class _ProductAddOrEditViewState extends State<ProductAddOrEditView>
     with SingleTickerProviderStateMixin {
-  TabBarControllerWidget tabBarPages = TabBarControllerWidget();
+  String comingFrom;
+  ProductModel product;
+
+  _ProductAddOrEditViewState(
+    this.comingFrom,
+    this.product,
+  );
+
+  //TabBarControllerWidget tabBarPages = TabBarControllerWidget();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Editar Produto'),
+        title:
+            Text(comingFrom == 'add' ? 'Cadastrar Produto' : 'Editar Produto'),
         centerTitle: true,
       ),
       backgroundColor: Colors.grey[100],
@@ -57,8 +74,6 @@ class _ProductAddOrEditViewState extends State<ProductAddOrEditView>
       left: 0,
       right: 0,
       child: Container(
-          // width: 190.0,
-          //  height: 190.0,
           decoration: new BoxDecoration(
               shape: BoxShape.rectangle,
               image: new DecorationImage(
@@ -92,7 +107,7 @@ class _ProductAddOrEditViewState extends State<ProductAddOrEditView>
   Widget tabBarPagesWidget(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.232),
-      child: tabBarPages,
+      child: TabBarControllerWidget(comingFrom, product),
     );
   }
 }
