@@ -31,9 +31,17 @@ Os principais fatores de avaliacao:
 . estrutura geral do projeto e organizacdo do cédigo
 
 . separacdo de interesses entre IU, autenticacdo, cédigo de banco de dados
-. simplicidade - nao exigimos uma solugaéo com engenharia excessiva
+. simplicidade - nao exigimos uma solução com engenharia excessiva
 
-. convencées de nomenclatura para variaveis, funcdes e classes
+. convenções de nomenclatura para variaveis, funcdes e classes
+
+----------------------------------------------------------------------
+Utilizei como banco de dados  o PostgreSQL e o Hasura como API.
+----------------------------------------------------------------------
+
+À baixo o link com o apk(para ser instalado no seu telefone android) e vídeo demonstrativo das funcionalidades do app.
+
+https://drive.google.com/drive/folders/1xGOagDGx-ypFhZCk98pNCz0AaJ5Giu1P?usp=sharing
 
 
 
