@@ -1,4 +1,4 @@
-# Projeto teste apra a empresa Suflex: https://www.suflex.com.br/
+# Projeto teste para a empresa Suflex: https://www.suflex.com.br/
 
 Projeto avaliativo Suflex
 
